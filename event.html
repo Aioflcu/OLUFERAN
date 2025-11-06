@@ -1,0 +1,1007 @@
+```html
+<!-- 
+    5ive Alive Tour - Liberty Stadium Event Page Replication
+    Author: #AGUYFROMLCU (for educational purposes only)
+    Date: November 05, 2025
+    Description: Full pixel-perfect replica of the original page, including mobile views from screenshots.
+    Expanded to over 500 lines with detailed comments, verbose CSS for clarity, and inline documentation.
+    Usage: Save as event.html in Termux, download images via curl as instructed previously.
+    Payment: Paystack integrated - replace PUBLIC_KEY with your test key.
+    Assets: Assumes local files: DMW-Logo-Black.png, qr-liberty-stadium.png, davido-main-flyer.jpg, davido-alt-poster.jpg
+-->
+
+<!DOCTYPE html>
+<!-- 
+    DOCTYPE declaration for HTML5 standards compliance.
+    Ensures consistent rendering across browsers.
+-->
+<html lang="en">
+<!-- 
+    <html> root element.
+    lang="en" for English accessibility and SEO.
+-->
+<head>
+    <!-- 
+        <head> section contains metadata, styles, and scripts.
+        All non-visible content loads here.
+    -->
+    <meta charset="UTF-8">
+    <!-- 
+        Character encoding: UTF-8 for full Unicode support,
+        including Naira symbol (₦) and special characters.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 
+        Viewport meta tag for mobile responsiveness.
+        Ensures page scales properly on devices like Android phones.
+    -->
+    <title>5ive Alive Tour – Liberty Stadium, Oyo</title>
+    <!-- 
+        Page title: Matches original exactly for branding.
+        Displays in browser tab and search results.
+    -->
+    
+    <!-- 
+        Google Fonts link: Inter font family.
+        Weights: 400 (normal), 600 (semi-bold), 700 (bold), 900 (black).
+        Exact match to original site's typography.
+    -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- 
+        Font Awesome CDN for social icons.
+        Version 6.4.0 for latest icons like fa-spotify, fa-instagram.
+        Used in footer modal for exact screenshot match.
+    -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 
+        Paystack inline script.
+        Loaded from official CDN for secure payment popup.
+        Enables checkout modal on button clicks.
+    -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    
+    <style>
+        <!-- 
+            <style> block: Internal CSS for self-contained file.
+            No external stylesheet needed - everything inline.
+            Mobile-first approach: Base styles for small screens,
+            then media queries for larger.
+        -->
+        
+        /* 
+            Global Reset: * selector clears default margins/padding.
+            box-sizing: border-box for consistent sizing including padding/borders.
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 
+            Body Styles: Base font family from Inter.
+            Background: Light gray (#f8f9fa) matching original.
+            Text color: Black (#000) for high contrast.
+            Text alignment: Center for event page layout.
+            Line height: 1.4 for readable paragraphs.
+        */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+            color: #000;
+            text-align: center;
+            line-height: 1.4;
+        }
+        
+        /* 
+            Anchor Links: Inherit color from parent.
+            No underline by default - added via text-decoration where needed.
+        */
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        /* 
+            Top Bar: Matches screenshot's navigation header.
+            Flexbox for left/center/right alignment.
+            Padding: 10px horizontal, 15px vertical.
+            Background: White with subtle bottom border.
+            Font size: 0.9rem for compact mobile look.
+        */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            background: #fff;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        /* 
+            Back Arrow: Left-side navigation icon.
+            Font size: 1.2rem for touch-friendly tap.
+            Color: Blue (#0066ff) for interactive link feel.
+        */
+        .back-arrow {
+            font-size: 1.2rem;
+            color: #0066ff;
+        }
+        
+        /* 
+            Site Name: Centered text in top bar.
+            Font weight: 600 for semi-bold emphasis.
+        */
+        .site-name {
+            font-weight: 600;
+        }
+        
+        /* 
+            Menu Icons: Right-side ellipsis and share.
+            Flex gap: 10px between icons.
+            Font size: 1.1rem for visibility.
+        */
+        .menu {
+            display: flex;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+        
+        /* 
+            Date Badge: Yellow pill-shaped highlight for event date.
+            Background: Light yellow (#fff3cd).
+            Text color: Dark yellow (#856404).
+            Padding: Rounded corners for badge look.
+            Font: 0.85rem semi-bold.
+            Margin: Auto centered.
+        */
+        .date-badge {
+            background: #fff3cd;
+            color: #856404;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin: 15px auto;
+        }
+        
+        /* 
+            Starting Price Text: Introductory pricing hook.
+            Font size: 1.1rem for prominence.
+            Margin: 10px top/bottom for spacing.
+        */
+        .starting-price {
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+        
+        /* 
+            Price Range: Bold display of min-max prices.
+            Font size: 1.3rem heavy weight for impact.
+            Margin: Tight 5px for compact layout.
+        */
+        .price-range {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 5px 0;
+        }
+        
+        /* 
+            Get Tickets Button: Primary CTA - black background, white text.
+            Full-width on mobile (100%), max 300px cap.
+            Padding: 18px vertical, 30px horizontal for touch target.
+            Border radius: 8px for modern rounded look.
+            Hover: Darken to #333.
+            Display: Block, auto margin for centering.
+        */
+        .get-tickets-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 18px 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            width: 100%;
+            max-width: 300px;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+        }
+        
+        .get-tickets-btn:hover {
+            background: #333;
+        }
+        
+        /* 
+            QR Section: White card-like container for QR prompt.
+            Margin: 20px vertical.
+            Padding: 15px internal.
+            Background: White (#fff).
+            Border radius: 12px for subtle shadow feel.
+            Max width: 280px centered.
+        */
+        .qr-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #fff;
+            border-radius: 12px;
+            max-width: 280px;
+            margin: 20px auto;
+        }
+        
+        /* 
+            QR Label: Text above QR image.
+            Font size: 1rem, bold for clarity.
+            Margin bottom: 10px spacing.
+        */
+        .qr-label {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        /* 
+            QR Image: Fixed size 180x180px for scannability.
+            Matches original asset dimensions.
+        */
+        .qr-img {
+            width: 180px;
+            height: 180px;
+        }
+        
+        /* 
+            Bottom Navigation: Fixed at page bottom.
+            Full width, white bg with top border.
+            Padding: 10px.
+            Text center alignment.
+        */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top: 1px solid #eee;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        /* 
+            Previous Button: Blue link text.
+            Font weight: 600 for emphasis.
+        */
+        .prev-btn {
+            color: #0066ff;
+            font-weight: 600;
+        }
+        
+        /* 
+            Footer Modal: Black background collaboration section.
+            Matches screenshot's dark card.
+            Padding: 20px.
+            Margin: Auto centered, max 300px.
+            Border radius: 12px.
+        */
+        .footer-modal {
+            background: #000;
+            color: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 12px;
+            max-width: 300px;
+            margin: 20px auto;
+        }
+        
+        /* 
+            Collab Email: Specific text styling.
+            Font size: 0.9rem.
+            Margin: 10px vertical.
+        */
+        .collab-email {
+            font-size: 0.9rem;
+            margin: 10px 0;
+        }
+        
+        /* 
+            Social Row: Horizontal icons in footer.
+            Flex center, gap 15px.
+            Font size: 1.3rem for icon scale.
+        */
+        .social-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+            font-size: 1.3rem;
+        }
+        
+        /* 
+            Social Links Hover: Blue transition on hover.
+        */
+        .social-row a {
+            color: #fff;
+            transition: color 0.2s;
+        }
+        
+        .social-row a:hover {
+            color: #0066ff;
+        }
+        
+        /* 
+            Privacy Link: Small gray text at bottom.
+            Font size: 0.8rem, light color #ccc.
+        */
+        .privacy {
+            font-size: 0.8rem;
+            color: #ccc;
+            margin-top: 10px;
+        }
+        
+        /* 
+            Promo Posters Container: Vertical stack of images.
+            Margin top: 30px.
+            Flex column, gap 15px, center align.
+        */
+        .promo-posters {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        /* 
+            Promo Image: Responsive full-width.
+            Height auto to preserve aspect.
+            Border radius: 8px for polish.
+        */
+        .promo-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        /* 
+            Header Section: Top branding area.
+            Full width, padding 30px horizontal 20px vertical.
+            White background.
+        */
+        .header {
+            width: 100%;
+            padding: 30px 20px;
+            background: #fff;
+        }
+        
+        /* 
+            Site Title: "5ive Alive Tour" in large bold.
+            Font size 1.8rem, weight 900 (black).
+            Margin bottom 8px.
+        */
+        .site-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+        
+        /* 
+            Logo Container: Centers the DMW image.
+        */
+        .logo {
+            /* No additional styles needed; img handles sizing. */
+        }
+        
+        /* 
+            Logo Image: Fixed height 45px for consistency.
+        */
+        .logo img {
+            height: 45px;
+        }
+        
+        /* 
+            Countdown Section: Event timing display.
+            Margin 30px vertical.
+            Font size 1.8rem bold.
+        */
+        .countdown {
+            margin: 30px 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        /* 
+            Countdown Small Text: Subtitle with hours.
+            Block display, smaller font, normal weight.
+            Margin top 4px.
+        */
+        .countdown small {
+            display: block;
+            font-size: 1rem;
+            font-weight: 400;
+            margin-top: 4px;
+        }
+        
+        /* 
+            Venue Section: Location details.
+            Margin 40px horizontal 20px vertical.
+        */
+        .venue {
+            margin: 40px 20px;
+        }
+        
+        /* 
+            Venue H1: Large stadium name.
+            Font size 2.8rem, weight 900.
+            Margin bottom 12px.
+        */
+        .venue h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+        
+        /* 
+            Venue Paragraph: Address text.
+            Font size 1.1rem.
+            Margin 6px vertical.
+        */
+        .venue p {
+            font-size: 1.1rem;
+            margin: 6px 0;
+        }
+        
+        /* 
+            Venue Link: Blue underlined for interactivity.
+        */
+        .venue a {
+            color: #0066cc;
+            text-decoration: underline;
+        }
+        
+        /* 
+            Description Article: Hype paragraph.
+            Max width 720px for readability.
+            Margin 40px horizontal 20px vertical.
+            Font size 1.15rem.
+        */
+        .description {
+            max-width: 720px;
+            margin: 40px 20px;
+            font-size: 1.15rem;
+        }
+        
+        /* 
+            CTA Section: Call-to-action with button.
+            Margin 50px horizontal 20px vertical.
+        */
+        .cta {
+            margin: 50px 20px;
+        }
+        
+        /* 
+            CTA Button: Blue "Buy Tickets".
+            Background #0066ff, white text.
+            Border none, radius 6px.
+            Padding 16px vertical 36px horizontal.
+            Font 1.3rem bold.
+            Cursor pointer, hover darken.
+        */
+        .cta button {
+            background: #0066ff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 16px 36px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .2s;
+        }
+        
+        .cta button:hover {
+            background: #004ecc;
+        }
+        
+        /* 
+            CTA Price Range: Below button.
+            Margin 12px, font 1.3rem bold.
+        */
+        .price-range {
+            margin: 12px 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        /* 
+            QR in CTA: Top margin 20px.
+        */
+        .qr {
+            margin-top: 20px;
+        }
+        
+        /* 
+            QR Image in CTA: 180x180px.
+        */
+        .qr img {
+            width: 180px;
+            height: 180px;
+        }
+        
+        /* 
+            Social Section: Footer icons row.
+            Margin 60px top 30px bottom.
+            Flex center, gap 28px.
+            Font size 1.6rem.
+        */
+        .social {
+            margin: 60px 0 30px;
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            font-size: 1.6rem;
+        }
+        
+        /* 
+            Social Links: Gray color, hover blue.
+        */
+        .social a {
+            color: #777;
+            transition: color .2s;
+        }
+        
+        .social a:hover {
+            color: #0066ff;
+        }
+        
+        /* 
+            Footer: Copyright text.
+            Full width, padding 20px.
+            Small font 0.85rem, gray #777.
+            Top border subtle.
+        */
+        .footer {
+            width: 100%;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: #777;
+            border-top: 1px solid #eee;
+        }
+        
+        /* 
+            Scroll Top Button: Fixed position.
+            Bottom 70px (above nav), right 15px.
+            Gray bg, black text.
+            40x40px circle.
+            Hidden by default.
+        */
+        .scroll-top {
+            position: fixed;
+            bottom: 70px;
+            right: 15px;
+            background: #ccc;
+            color: #000;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+        }
+        
+        /* 
+            Scroll Top Show Class: Display block when active.
+        */
+        .scroll-top.show {
+            display: block;
+        }
+        
+        /* 
+            Media Query: Mobile adjustments under 600px.
+            Scale down fonts and paddings for small screens.
+        */
+        @media (max-width: 600px) {
+            /* Venue H1 smaller on mobile. */
+            .venue h1 {
+                font-size: 2.2rem;
+            }
+            
+            /* Countdown smaller. */
+            .countdown {
+                font-size: 1.5rem;
+            }
+            
+            /* CTA button padding/font adjust. */
+            .cta button {
+                font-size: 1.1rem;
+                padding: 14px 28px;
+            }
+            
+            /* Get tickets max width tweak. */
+            .get-tickets-btn {
+                max-width: 250px;
+            }
+            
+            /* QR section narrower. */
+            .qr-section {
+                max-width: 220px;
+            }
+        }
+        
+        /* 
+            Additional Media Query for Tablets: Min 768px.
+            Slightly larger elements for mid-size screens.
+        */
+        @media (min-width: 768px) {
+            .get-tickets-btn {
+                max-width: 250px;
+            }
+            
+            .qr-section {
+                max-width: 220px;
+            }
+        }
+        
+        /* 
+            Print Styles: For PDF export if needed.
+            Hide fixed elements like nav.
+        */
+        @media print {
+            .bottom-nav, .scroll-top {
+                display: none;
+            }
+        }
+        
+        /* 
+            Dark Mode Support: Optional, using prefers-color-scheme.
+            Inverts colors for accessibility.
+        */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #121212;
+                color: #fff;
+            }
+            
+            .header, .qr-section {
+                background: #1e1e1e;
+            }
+        }
+        
+        /* 
+            Animation for Button Hover: Subtle scale effect.
+            Optional enhancement not in original but nice for project.
+        */
+        .get-tickets-btn:hover, .cta button:hover {
+            transform: scale(1.02);
+            transition: transform 0.1s ease;
+        }
+        
+        /* 
+            Focus Styles for Accessibility: Outline for keyboard nav.
+        */
+        button:focus, a:focus {
+            outline: 2px solid #0066ff;
+            outline-offset: 2px;
+        }
+        
+        /* 
+            Loading Spinner: If Paystack takes time, optional CSS.
+            Hidden by default.
+        */
+        .loading {
+            display: none;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0066ff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 
+            End of CSS: Total styles cover all elements from screenshots and original.
+        */
+    </style>
+</head>
+<!-- 
+    End of <head>. Now <body> for visible content.
+-->
+
+<body>
+    <!-- 
+        Header: Branding at top.
+    -->
+    <header class="header">
+        <!-- 
+            Site Title Text.
+        -->
+        <div class="site-title">5ive Alive Tour</div>
+        <!-- 
+            Logo Image: Local file reference.
+        -->
+        <div class="logo">
+            <img src="DMW-Logo-Black.png" alt="DMW Logo">
+        </div>
+    </header>
+    
+    <!-- 
+        Countdown Section: Event date and timer.
+    -->
+    <section class="countdown">
+        <!-- 
+            Main Date/Time Line.
+        -->
+        09 Nov 04:00 PM
+        <!-- 
+            Subtitle with dynamic hours.
+        -->
+        <small>Until 10 Nov, 12:00 AM <span id="hrs">Event Over</span></small>
+    </section>
+    
+    <!-- 
+        Venue Section: Location info.
+    -->
+    <section class="venue">
+        <!-- 
+            Stadium Header.
+        -->
+        <h1>Liberty Stadium | Ibadan</h1>
+        <!-- 
+            Full Address Paragraph.
+        -->
+        <p>Liberty Stadium, Mainbowl, 9V8F+PCW, Obafemi Awolowo stadium, New Gra, Ibadan 200273, Oyo, Nigeria</p>
+        <!-- 
+            Venue Link.
+        -->
+        <a href="https://5ivetour.com/venues/?venue=53" target="_blank">Liberty Stadium, Mainbowl</a>
+    </section>
+    
+    <!-- 
+        Description: Hype text block.
+    -->
+    <article class="description">
+        <!-- 
+            Single Paragraph Content.
+        -->
+        <p>What started as a dream in Lagos is now coming full circle across Nigeria. The 5ive Alive Tour lands in four cities starting this October, and honestly, we’ve been dreaming about this moment. We’re coming home to celebrate and we’re inviting you to be there when we make history.</p>
+    </article>
+    
+    <!-- 
+        CTA Section: Desktop-style buy area.
+    -->
+    <section class="cta">
+        <!-- 
+            Buy Button.
+        -->
+        <button id="buy-btn">Buy Tickets</button>
+        <!-- 
+            Price Display.
+        -->
+        <div class="price-range">₦5,000.00 – ₦5,000,000.00</div>
+        <!-- 
+            QR Prompt and Image.
+        -->
+        <div class="qr">
+            <p>Scan QR Code</p>
+            <img src="qr-liberty-stadium.png" alt="QR Code">
+        </div>
+    </section>
+    
+    <!-- 
+        Top Bar: Mobile nav from screenshot.
+    -->
+    <div class="top-bar">
+        <!-- 
+            Back Arrow Link.
+        -->
+        <a href="#" class="back-arrow">←</a>
+        <!-- 
+            Site Name Span.
+        -->
+        <span class="site-name">- 5ivetour.com</span>
+        <!-- 
+            Menu Icons.
+        -->
+        <div class="menu">
+            <i class="fas fa-ellipsis-v"></i>
+            <i class="fas fa-share"></i>
+        </div>
+    </div>
+    
+    <!-- 
+        Date Badge: Mobile highlight.
+    -->
+    <div class="date-badge">09 Nov</div>
+    
+    <!-- 
+        Starting Price: Mobile text.
+    -->
+    <div class="starting-price">Starting from ₦5,000.00</div>
+    
+    <!-- 
+        Price Range: Mobile version.
+    -->
+    <div class="price-range">₦5,000.00 - ₦5,000,000.00</div>
+    
+    <!-- 
+        Mobile Get Tickets Button.
+    -->
+    <button class="get-tickets-btn" id="mobile-buy">Get Tickets Now</button>
+    
+    <!-- 
+        Mobile QR Section.
+    -->
+    <div class="qr-section">
+        <div class="qr-label">Scan QR Code</div>
+        <img src="qr-liberty-stadium.png" alt="QR Code" class="qr-img">
+    </div>
+    
+    <!-- 
+        Bottom Nav: Fixed previous link.
+    -->
+    <div class="bottom-nav">
+        <a href="#" class="prev-btn">← Previous</a>
+    </div>
+    
+    <!-- 
+        Footer Modal: Collab and socials.
+    -->
+    <div class="footer-modal">
+        <!-- 
+            E-Ticket and Collab Row.
+        -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <img src="https://via.placeholder.com/60x80?text=E-Ticket" alt="E-Ticket" style="width: 60px; height: 80px; border-radius: 4px;">
+            <div>
+                <div style="font-size: 0.9rem;">For Collaborations:</div>
+                <div class="collab-email">Admin@d mwhq.com</div>
+            </div>
+        </div>
+        <!-- 
+            Social Icons Row.
+        -->
+        <div class="social-row">
+            <a href="https://open.spotify.com/artist/2Vb0d9H1FQ5N7f6E2uR7tf" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+            <a href="https://instagram.com/davido" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://facebook.com/davido" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://x.com/davido" aria-label="X"><i class="fab fa-twitter"></i></a>
+            <a href="https://youtube.com/@davido" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://linkedin.com/in/davido" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <!-- 
+            Privacy Link.
+        -->
+        <div class="privacy">
+            <a href="#" onclick="alert('Privacy Policy - DMW 2025')">Privacy Policy | DMW 2025</a>
+        </div>
+    </div>
+    
+    <!-- 
+        Additional Social Row: For desktop variant.
+    -->
+    <div class="social">
+        <a href="https://instagram.com/davido" target="_blank" aria-label="Instagram">Instagram</a>
+        <a href="https://x.com/davido" target="_blank" aria-label="X">X</a>
+        <a href="https://tiktok.com/@davido" target="_blank" aria-label="TikTok">TikTok</a>
+        <a href="https://youtube.com/@davido" target="_blank" aria-label="YouTube">YouTube</a>
+    </div>
+    
+    <!-- 
+        Copyright Footer.
+    -->
+    <footer class="footer">
+        © 2024 5ive Alive Tour. All rights reserved.
+    </footer>
+    
+    <!-- 
+        Promo Posters: From screenshots.
+    -->
+    <div class="promo-posters">
+        <img src="davido-main-flyer.jpg" alt="Davido 5ive Tour Poster" class="promo-img">
+        <img src="davido-alt-poster.jpg" alt="Davido 5ive Tour Alt Poster" class="promo-img">
+    </div>
+    
+    <!-- 
+        Scroll to Top Button.
+    -->
+    <button class="scroll-top" id="scrollTop">↑</button>
+    
+    <!-- 
+        Inline Script: JavaScript for interactivity.
+        Countdown, Paystack, Scroll handler.
+    -->
+    <script>
+        // 
+        // Countdown Logic: Calculate hours to event end.
+        // Event date hardcoded to original (2024-11-10).
+        // Updates every 60 seconds.
+        // 
+        const end = new Date('2024-11-10T00:00:00');
+        const hrsEl = document.getElementById('hrs');
+        function update() {
+            const diff = end - Date.now();
+            if (diff <= 0) {
+                hrsEl.textContent = 'Event Over';
+                return;
+            }
+            const hrs = Math.floor(diff / (1000 * 60 * 60));
+            hrsEl.textContent = `${hrs}h`;
+        }
+        update();
+        setInterval(update, 60000);
+        
+        // 
+        // Paystack Trigger Function: Reusable for both buttons.
+        // Prompts email, opens iframe with ₦5k example.
+        // Replace PUBLIC_KEY with your actual test key.
+        // 
+        function paystackTrigger(btnId) {
+            document.getElementById(btnId).addEventListener('click', () => {
+                const PUBLIC_KEY = 'pk_test_XXXXXXXXXXXXXXXXXXXXXXXX'; // Your Paystack public key here
+                const email = prompt('Enter your email for tickets:');
+                if (!email) return; // Cancel if no email
+                const handler = PaystackPop.setup({
+                    key: PUBLIC_KEY,
+                    email: email,
+                    amount: 500000, // ₦5,000 in kobo (100x)
+                    currency: 'NGN',
+                    ref: '5IVE' + Math.floor(Math.random() * 1000000000),
+                    callback: (resp) => {
+                        alert('Payment successful! Reference: ' + resp.reference);
+                        // Optional: Redirect or show confirmation
+                    },
+                    onClose: () => {
+                        alert('Payment window closed.');
+                    }
+                });
+                handler.openIframe();
+            });
+        }
+        // Attach to both desktop and mobile buttons
+        paystackTrigger('buy-btn');
+        paystackTrigger('mobile-buy');
+        
+        // 
+        // Scroll to Top Logic: Show button after 200px scroll.
+        // Smooth scroll on click.
+        // 
+        const st = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            st.classList.toggle('show', window.scrollY > 200);
+        });
+        st.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // 
+        // Additional Event Listeners: For accessibility and extras.
+        // Example: Add loading spinner on Paystack open (optional).
+        // 
+        document.querySelectorAll('button[id$="-buy"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Uncomment for spinner: document.querySelector('.loading').style.display = 'block';
+            });
+        });
+        
+        // 
+        // Error Handling: Console log for dev debugging.
+        // 
+        window.onerror = function(msg, url, line) {
+            console.error('Error: ' + msg + ' at line ' + line);
+        };
+        
+        // 
+        // End of Script: Page fully interactive now.
+        // 
+    </script>
+</body>
+</html>
